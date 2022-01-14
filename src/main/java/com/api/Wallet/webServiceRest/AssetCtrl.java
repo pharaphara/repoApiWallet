@@ -22,7 +22,7 @@ public class AssetCtrl {
 	private ServiceAsset serviceAsset;
 	
 	@PostMapping("/userAssets")
-	public AssetsDto getAssetsByUser(@RequestBody String userEmail) {
+	public AssetsDto getAssetsByUser(@RequestParam(value="userEmail") String userEmail) {
 		AssetsDto userAssets = serviceAsset.findAssetsByUser(userEmail);
 		return userAssets;
 	}
