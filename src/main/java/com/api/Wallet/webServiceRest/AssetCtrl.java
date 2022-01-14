@@ -15,7 +15,6 @@ import com.api.Wallet.dto.AssetsDto;
 import com.api.Wallet.service.ServiceAsset;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:3000" , "http://localhost:4200" } , methods = { RequestMethod.GET , RequestMethod.POST , RequestMethod.PUT , RequestMethod.DELETE })
 @RequestMapping(value="/assets-api-rest")
 public class AssetCtrl {
 	
@@ -29,8 +28,8 @@ public class AssetCtrl {
 	}
 	
 	@GetMapping("/userAsset")
-	public AssetDto getUserAssetByCurrency(@RequestParam(value="userEmail") String userEmail, @RequestParam(value="currencyId") int currencyId) {
-		AssetDto assetDto = serviceAsset.findUserAssetByCurrency(userEmail, currencyId);
+	public AssetDto getUserAssetByCurrency(@RequestParam(value="userEmail") String userEmail, @RequestParam(value="currencyTicker") String currencyTicker) {
+		AssetDto assetDto = serviceAsset.findUserAssetByCurrency(userEmail, currencyTicker);
 		return assetDto;
 	}
 	

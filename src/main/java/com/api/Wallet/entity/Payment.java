@@ -2,14 +2,18 @@ package com.api.Wallet.entity;
 
 import java.sql.Date;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Entity
 public class Payment {
 	
 	@Id
+	@GeneratedValue
 	private int id;
 	private double amount;
 	private Date date;
@@ -18,9 +22,8 @@ public class Payment {
 	@JoinColumn(name = "id_asset")
 	private Asset asset;
 
-	public Payment(int id, double amount, Date date, Asset asset) {
+	public Payment(double amount, Date date, Asset asset) {
 		super();
-		this.id = id;
 		this.amount = amount;
 		this.date = date;
 		this.asset = asset;

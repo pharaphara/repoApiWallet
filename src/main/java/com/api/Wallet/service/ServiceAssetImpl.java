@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.api.Wallet.dao.DaoAsset;
 import com.api.Wallet.dto.AssetDto;
 import com.api.Wallet.dto.AssetsDto;
+import com.api.Wallet.dto.PaymentDto;
 import com.api.Wallet.entity.Asset;
 
 @Service
@@ -37,7 +38,7 @@ public class ServiceAssetImpl implements ServiceAsset{
 	private AssetsDto assetsToAssetsDto(List<Asset> allAsset) {
 		List<AssetDto> assetsDto = new ArrayList<AssetDto>();
 		for (Asset asset : allAsset) {
-			AssetDto assetDto = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyId(), asset.getAmount());
+			AssetDto assetDto = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyTicker(), asset.getAmount());
 			assetsDto.add(assetDto);
 		}
 		AssetsDto result = new AssetsDto(assetsDto);
@@ -45,14 +46,10 @@ public class ServiceAssetImpl implements ServiceAsset{
 	}
 
 	@Override
-	public AssetDto findUserAssetByCurrency(String userEmail, int currencyId) {
+	public AssetDto findUserAssetByCurrency(String userEmail, String currencyTicker) {
 		List<Asset> allUserAsset = getAssetByUser(userEmail);
-		AssetDto result = null;
-		for (Asset asset : allUserAsset) {
-			if(asset.getCurrencyId() == currencyId) {
-				result = new AssetDto(asset.getCurrencyId(), asset.getUserEmail(), asset.getCurrencyId(), asset.getAmount());
-			}
-		}
+		Asset asset = getAssetByCurrency(allUserAsset, currencyTicker);
+		AssetDto result = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyTicker(), asset.getAmount());
 		return result;
 	}
 	
@@ -66,6 +63,26 @@ public class ServiceAssetImpl implements ServiceAsset{
 			}
 		}
 		return result;
+	}
+	
+	private Asset getAssetByCurrency(List<Asset> assets, String currencyTicker) {
+		Asset result = null;
+		for (Asset asset : assets) {
+			if(asset.getCurrencyTicker().equals(currencyTicker)) {
+				result = asset;
+			}
+		}
+		return result;	
+	}
+
+	@Override
+	public Asset majAsset(PaymentDto paymentDto) {
+		List<Asset> allUserAsset = getAssetByUser(paymentDto.getUserEmail());
+		Asset asset = getAssetByCurrency(allUserAsset, paymentDto.getCurrencyTicker());
+		Double montantInitial = asset.getAmount();
+		asset.setAmount(montantInitial + paymentDto.getMontant());
+		daoAsset.save(asset);
+		return asset;
 	}
 
 }
