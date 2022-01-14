@@ -18,7 +18,12 @@ public class PaymentDto {
 	public void setMontant(double montant) {
 		this.montant = montant;
 	}
-	
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
 	public PaymentDto(String currencyTicker, String userEmail, double montant) {
 		super();
 		this.currencyTicker = currencyTicker;
