@@ -1,12 +1,11 @@
 package com.api.Wallet.entity;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
-/**
- * @author formation
- *
- */
 @Entity
 public class Asset {
 	
@@ -16,6 +15,17 @@ public class Asset {
 	private int currencyId;
 	private double amount;
 	
+	@OneToMany(mappedBy ="asset")
+	private List<Payment> payments;
+
+	
+	public Asset(int id, String userEmail, int currencyId, double amount) {
+		super();
+		this.id = id;
+		this.userEmail = userEmail;
+		this.currencyId = currencyId;
+		this.amount = amount;
+	}
 	public int getId() {
 		return id;
 	}
@@ -40,24 +50,23 @@ public class Asset {
 	public void setAmount(double amount) {
 		this.amount = amount;
 	}
-	
-	public Asset(int id, String userEmail, int currencyId, double amount) {
+	public List<Payment> getPayments() {
+		return payments;
+	}
+	public void setPayments(List<Payment> payments) {
+		this.payments = payments;
+	}
+	public Asset(int id, String userEmail, int currencyId, double amount, List<Payment> payments) {
 		super();
 		this.id = id;
 		this.userEmail = userEmail;
 		this.currencyId = currencyId;
 		this.amount = amount;
+		this.payments = payments;
 	}
-	
 	public Asset() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 	
-	@Override
-	public String toString() {
-		return "Asset [id=" + id + ", userEmail=" + userEmail + ", currencyId=" + currencyId + ", amount=" + amount
-				+ "]";
-	}
+
 	
 }
