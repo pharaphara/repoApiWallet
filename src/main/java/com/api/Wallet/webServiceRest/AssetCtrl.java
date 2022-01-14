@@ -2,6 +2,7 @@ package com.api.Wallet.webServiceRest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,19 +22,19 @@ public class AssetCtrl {
 	@Autowired
 	private ServiceAsset serviceAsset;
 	
-	@PostMapping("/userAssets")
+	@GetMapping("/userAssets")
 	public AssetsDto getAssetsByUser(@RequestParam(value="userEmail") String userEmail) {
 		AssetsDto userAssets = serviceAsset.findAssetsByUser(userEmail);
 		return userAssets;
 	}
 	
-	@PostMapping("/userAsset")
+	@GetMapping("/userAsset")
 	public AssetDto getUserAssetByCurrency(@RequestParam(value="userEmail") String userEmail, @RequestParam(value="currencyId") int currencyId) {
 		AssetDto assetDto = serviceAsset.findUserAssetByCurrency(userEmail, currencyId);
 		return assetDto;
 	}
 	
-	@PostMapping("/allAssets")
+	@GetMapping("/allAssets")
 	public AssetsDto getAllAssets() {
 		AssetsDto allAssets = new AssetsDto();
 		allAssets = serviceAsset.findAllAssets();

@@ -2,26 +2,23 @@ package com.api.Wallet.dto;
 
 import java.util.List;
 
-import com.api.Wallet.entity.Asset;
-
 public class AssetsDto {
 	
-	private List<Asset> assets;
+	private List<AssetDto> assetsDto;
 
-	public AssetsDto(List<Asset> assets) {
-		super();
-		this.assets = assets;
+	public List<AssetDto> getAssetsDto() {
+		return assetsDto;
 	}
-
-	public List<Asset> getAssets() {
-		return assets;
-	}
-	public void setAssets(List<Asset> assets) {
-		this.assets = assets;
+	
+	public void setAssetsDto(List<AssetDto> assetsDto) {
+		this.assetsDto = assetsDto;
 	}
 
 	public AssetsDto() {
-		super();
 	}
-	
+
+	public AssetsDto(List<AssetDto> assetsDto) {
+		this.assetsDto = assetsDto;
+	}
+
 }

@@ -21,15 +21,27 @@ public class ServiceAssetImpl implements ServiceAsset{
 
 	@Override
 	public AssetsDto findAssetsByUser(String userEmail) {
-		List<Asset> userAsset = getAssetByUser(userEmail);
-		return new AssetsDto(userAsset);
+		List<Asset> userAssets = getAssetByUser(userEmail);
+		AssetsDto result = assetsToAssetsDto(userAssets);
+		return result;
 	}
 
 	@Override
 	public AssetsDto findAllAssets() {
 		List<Asset> allAsset = new ArrayList<Asset>();
 		allAsset = (List<Asset>) daoAsset.findAll();
-		return new AssetsDto(allAsset);
+		AssetsDto result = assetsToAssetsDto(allAsset);
+		return result;	
+	}
+
+	private AssetsDto assetsToAssetsDto(List<Asset> allAsset) {
+		List<AssetDto> assetsDto = new ArrayList<AssetDto>();
+		for (Asset asset : allAsset) {
+			AssetDto assetDto = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyId(), asset.getAmount());
+			assetsDto.add(assetDto);
+		}
+		AssetsDto result = new AssetsDto(assetsDto);
+		return result;
 	}
 
 	@Override
@@ -38,7 +50,7 @@ public class ServiceAssetImpl implements ServiceAsset{
 		AssetDto result = null;
 		for (Asset asset : allUserAsset) {
 			if(asset.getCurrencyId() == currencyId) {
-				result = new AssetDto(asset);
+				result = new AssetDto(asset.getCurrencyId(), asset.getUserEmail(), asset.getCurrencyId(), asset.getAmount());
 			}
 		}
 		return result;
