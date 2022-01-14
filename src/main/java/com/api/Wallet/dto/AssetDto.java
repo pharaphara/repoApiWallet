@@ -6,7 +6,7 @@ public class AssetDto {
 
 	private int id;
 	private String userEmail;
-	private int currencyId;
+	private String currencyTicker;
 	private double amount;
 	
 	public int getId() {
@@ -21,11 +21,11 @@ public class AssetDto {
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
-	public int getCurrencyId() {
-		return currencyId;
+	public String getcurrencyTicker() {
+		return currencyTicker;
 	}
-	public void setCurrencyId(int currencyId) {
-		this.currencyId = currencyId;
+	public void setCurrencyId(String currencyTicker) {
+		this.currencyTicker = currencyTicker;
 	}
 	public double getAmount() {
 		return amount;
@@ -34,11 +34,11 @@ public class AssetDto {
 		this.amount = amount;
 	}
 	
-	public AssetDto(int id, String userEmail, int currencyId, double amount) {
+	public AssetDto(int id, String userEmail, String currencyTicker, double amount) {
 		super();
 		this.id = id;
 		this.userEmail = userEmail;
-		this.currencyId = currencyId;
+		this.currencyTicker = currencyTicker;
 		this.amount = amount;
 	}
 	
