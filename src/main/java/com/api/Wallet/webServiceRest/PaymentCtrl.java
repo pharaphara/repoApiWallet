@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.Wallet.dto.PaymentDto;
+import com.api.Wallet.dto.TransfertDto;
+import com.api.Wallet.dto.ResultTransfertDto;
 import com.api.Wallet.service.ServicePayment;
 
 @RestController
@@ -19,6 +21,11 @@ public class PaymentCtrl {
 	@PostMapping("/sendPayment")
 	public PaymentDto sendPayment(@RequestBody PaymentDto paymentDto) {
 		return servicePayment.achievePayment(paymentDto);
+	}
+	
+	@PostMapping("/transfertCurrency")
+	public ResultTransfertDto transfertCurrency(@RequestBody TransfertDto transfertDto) {
+		return servicePayment.transfertCurrency(transfertDto);
 	}
 	
 }

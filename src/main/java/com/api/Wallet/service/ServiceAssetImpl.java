@@ -46,15 +46,12 @@ public class ServiceAssetImpl implements ServiceAsset{
 	}
 
 	@Override
-	public Asset majAsset(PaymentDto paymentDto) {
-		double transactionAmount = paymentDto.getMontant();
-		//Recuperation de l'asset concerne
-		Asset asset = getUserAsset(paymentDto.getUserEmail(), paymentDto.getCurrencyTicker());
+	public Asset majAsset(Asset asset, double montant, boolean isTransfert) {
 		//Mis a jour du montant
-		asset.setAmount(asset.getAmount() + transactionAmount);
-		//Mis a jour du montant disponible s'il recoit de l'argent
-		if(transactionAmount > 0) {
-			asset.setAvailableAmount(asset.getAvailableAmount() + transactionAmount);			
+		asset.setAmount(asset.getAmount() + montant);
+		//Mis a jour du montant disponible s'il recoit de l'argent ou si c'est un transfert
+		if(montant > 0 || isTransfert) {
+			asset.setAvailableAmount(asset.getAvailableAmount() + montant);			
 		}
 		daoAsset.save(asset);
 		return asset;

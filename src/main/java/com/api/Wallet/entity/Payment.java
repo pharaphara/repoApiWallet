@@ -1,6 +1,8 @@
 package com.api.Wallet.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -22,10 +24,12 @@ public class Payment {
 	@JoinColumn(name = "id_asset")
 	private Asset asset;
 
-	public Payment(double amount, Date date, Asset asset) {
+	public Payment(double amount, Asset asset) {
 		super();
 		this.amount = amount;
-		this.date = date;
+		LocalDate paymentDate = LocalDate.now();
+		Date sqlDate = Date.valueOf(paymentDate);
+		this.date = sqlDate;
 		this.asset = asset;
 	}
 

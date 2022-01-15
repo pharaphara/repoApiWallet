@@ -17,7 +17,8 @@ public interface ServiceAsset {
 	AssetsDto findAssetsByUser(String userEmail);
 	AssetsDto findAllAssets();
 	AssetDto findUserAssetByCurrency(String userEmail, String currencyTicker);
-	Asset majAsset(PaymentDto paymentDto);
+	Asset majAsset(Asset asset, double montant, boolean isTransfert);
 	AssetAvailableAmountDto getAvailableAmount(String userEmail, String currencyTicker);
 	AssetAmountToBlockDto blockAmount(AssetAmountToBlockDto assetAmountToBlockDto);
+
 }
