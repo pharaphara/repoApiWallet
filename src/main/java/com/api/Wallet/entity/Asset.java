@@ -17,15 +17,17 @@ public class Asset {
 	private String currencyTicker;
 	private double amount;
 	private double availableAmount;
+	private String walletAdress;
 	
 	@OneToMany(mappedBy ="asset")
 	private List<Payment> payments;
 
-	public Asset(String userEmail, String currencyTicker, double amount, double availableAmount) {
+	public Asset(String userEmail, String currencyTicker, double amount, double availableAmount, String walletAdress) {
 		this.userEmail = userEmail;
 		this.currencyTicker = currencyTicker;
 		this.amount = amount;
 		this.availableAmount = availableAmount;
+		this.walletAdress = walletAdress;
 	}
 	public int getId() {
 		return id;
@@ -62,6 +64,12 @@ public class Asset {
 	}
 	public void setAvailableAmount(double availableAmount) {
 		this.availableAmount = availableAmount;
+	}
+	public String getWalletAdress() {
+		return walletAdress;
+	}
+	public void setWalletAdress(String walletAdress) {
+		this.walletAdress = walletAdress;
 	}
 	public Asset() {
 	}
