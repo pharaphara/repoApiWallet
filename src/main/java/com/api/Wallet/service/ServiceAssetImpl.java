@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.api.Wallet.dao.DaoAsset;
+import com.api.Wallet.dto.AssetAmountToBlockDto;
+import com.api.Wallet.dto.AssetAvailableAmountDto;
 import com.api.Wallet.dto.AssetDto;
 import com.api.Wallet.dto.AssetsDto;
 import com.api.Wallet.dto.PaymentDto;
@@ -22,7 +24,7 @@ public class ServiceAssetImpl implements ServiceAsset{
 
 	@Override
 	public AssetsDto findAssetsByUser(String userEmail) {
-		List<Asset> userAssets = getAssetByUser(userEmail);
+		List<Asset> userAssets = getAssetsByUser(userEmail);
 		AssetsDto result = assetsToAssetsDto(userAssets);
 		return result;
 	}
@@ -35,25 +37,50 @@ public class ServiceAssetImpl implements ServiceAsset{
 		return result;	
 	}
 
-	private AssetsDto assetsToAssetsDto(List<Asset> allAsset) {
-		List<AssetDto> assetsDto = new ArrayList<AssetDto>();
-		for (Asset asset : allAsset) {
-			AssetDto assetDto = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyTicker(), asset.getAmount());
-			assetsDto.add(assetDto);
-		}
-		AssetsDto result = new AssetsDto(assetsDto);
-		return result;
-	}
-
 	@Override
 	public AssetDto findUserAssetByCurrency(String userEmail, String currencyTicker) {
-		List<Asset> allUserAsset = getAssetByUser(userEmail);
+		List<Asset> allUserAsset = getAssetsByUser(userEmail);
 		Asset asset = getAssetByCurrency(allUserAsset, currencyTicker);
 		AssetDto result = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyTicker(), asset.getAmount());
 		return result;
 	}
+
+	@Override
+	public Asset majAsset(PaymentDto paymentDto) {
+		double transactionAmount = paymentDto.getMontant();
+		//Recuperation de l'asset concerne
+		Asset asset = getUserAsset(paymentDto.getUserEmail(), paymentDto.getCurrencyTicker());
+		//Mis a jour du montant
+		asset.setAmount(asset.getAmount() + transactionAmount);
+		//Mis a jour du montant disponible s'il recoit de l'argent
+		if(transactionAmount > 0) {
+			asset.setAvailableAmount(asset.getAvailableAmount() + transactionAmount);			
+		}
+		daoAsset.save(asset);
+		return asset;
+	}
+
+	@Override
+	public AssetAvailableAmountDto getAvailableAmount(String userEmail, String currencyTicker) {
+		Asset asset = getUserAsset(userEmail, currencyTicker);
+		return new AssetAvailableAmountDto(userEmail, currencyTicker, asset.getAvailableAmount());
+	}
 	
-	private List<Asset> getAssetByUser(String userEmail) {
+	@Override
+	public AssetAmountToBlockDto blockAmount(AssetAmountToBlockDto assetAmountToBlockDto) {
+		Asset asset = getUserAsset(assetAmountToBlockDto.getUserEmail(), assetAmountToBlockDto.getCurrencyTicker());
+		asset.setAvailableAmount(asset.getAvailableAmount() - assetAmountToBlockDto.getAmountToBlock());
+		daoAsset.save(asset);
+		return assetAmountToBlockDto;
+	}
+	
+	//Recuperation de l'asset d'un user
+	private Asset getUserAsset(String userEmail, String currencyTicker) {
+		return getAssetByCurrency(getAssetsByUser(userEmail), currencyTicker);
+	}
+	
+	//Recuperation de tout les assets d'un user
+	private List<Asset> getAssetsByUser(String userEmail) {
 		List<Asset> allAsset;
 		allAsset = (List<Asset>) daoAsset.findAll();
 		List<Asset> result = new ArrayList<Asset>();
@@ -65,6 +92,7 @@ public class ServiceAssetImpl implements ServiceAsset{
 		return result;
 	}
 	
+	//Recuperation de l'asset d'un user dans sa liste d'assets
 	private Asset getAssetByCurrency(List<Asset> assets, String currencyTicker) {
 		Asset result = null;
 		for (Asset asset : assets) {
@@ -74,15 +102,15 @@ public class ServiceAssetImpl implements ServiceAsset{
 		}
 		return result;	
 	}
-
-	@Override
-	public Asset majAsset(PaymentDto paymentDto) {
-		List<Asset> allUserAsset = getAssetByUser(paymentDto.getUserEmail());
-		Asset asset = getAssetByCurrency(allUserAsset, paymentDto.getCurrencyTicker());
-		Double montantInitial = asset.getAmount();
-		asset.setAmount(montantInitial + paymentDto.getMontant());
-		daoAsset.save(asset);
-		return asset;
+	
+	private AssetsDto assetsToAssetsDto(List<Asset> allAsset) {
+		List<AssetDto> assetsDto = new ArrayList<AssetDto>();
+		for (Asset asset : allAsset) {
+			AssetDto assetDto = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyTicker(), asset.getAmount());
+			assetsDto.add(assetDto);
+		}
+		AssetsDto result = new AssetsDto(assetsDto);
+		return result;
 	}
 
 }

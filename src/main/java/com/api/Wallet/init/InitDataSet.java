@@ -16,10 +16,11 @@ public class InitDataSet {
 	
 	@PostConstruct
 	public void init() {
-		daoAsset.save(new Asset(1, "a@gmail.com", "EUR", 1000));
-		daoAsset.save(new Asset(2, "a@gmail.com", "BTC", 2000));
-		daoAsset.save(new Asset(3, "b@gmail.com", "EUR", 3000));
-		daoAsset.save(new Asset(4, "b@gmail.com", "BTC", 4000));
+		//Asset(String userEmail, String currencyTicker, double amount, double blockedAmount, double availableAmount)
+		daoAsset.save(new Asset("a@gmail.com", "EUR", 1000, 1000));
+		daoAsset.save(new Asset("a@gmail.com", "BTC", 2000, 2000));
+		daoAsset.save(new Asset("b@gmail.com", "EUR", 3000, 3000));
+		daoAsset.save(new Asset("b@gmail.com", "BTC", 4000, 4000));
 	}
 
 }

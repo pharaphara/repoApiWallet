@@ -3,6 +3,7 @@ package com.api.Wallet.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
@@ -10,21 +11,21 @@ import javax.persistence.OneToMany;
 public class Asset {
 	
 	@Id
+	@GeneratedValue
 	private int id;
 	private String userEmail;
 	private String currencyTicker;
 	private double amount;
+	private double availableAmount;
 	
 	@OneToMany(mappedBy ="asset")
 	private List<Payment> payments;
 
-	
-	public Asset(int id, String userEmail, String currencyTicker, double amount) {
-		super();
-		this.id = id;
+	public Asset(String userEmail, String currencyTicker, double amount, double availableAmount) {
 		this.userEmail = userEmail;
 		this.currencyTicker = currencyTicker;
 		this.amount = amount;
+		this.availableAmount = availableAmount;
 	}
 	public int getId() {
 		return id;
@@ -56,13 +57,11 @@ public class Asset {
 	public void setPayments(List<Payment> payments) {
 		this.payments = payments;
 	}
-	public Asset(int id, String userEmail, String currencyTicker, double amount, List<Payment> payments) {
-		super();
-		this.id = id;
-		this.userEmail = userEmail;
-		this.currencyTicker = currencyTicker;
-		this.amount = amount;
-		this.payments = payments;
+	public double getAvailableAmount() {
+		return availableAmount;
+	}
+	public void setAvailableAmount(double availableAmount) {
+		this.availableAmount = availableAmount;
 	}
 	public Asset() {
 	}
