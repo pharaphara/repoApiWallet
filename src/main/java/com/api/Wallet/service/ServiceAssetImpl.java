@@ -12,7 +12,6 @@ import com.api.Wallet.dto.AssetAmountToBlockDto;
 import com.api.Wallet.dto.AssetAvailableAmountDto;
 import com.api.Wallet.dto.AssetDto;
 import com.api.Wallet.dto.AssetsDto;
-import com.api.Wallet.dto.PaymentDto;
 import com.api.Wallet.entity.Asset;
 
 @Service
@@ -23,17 +22,17 @@ public class ServiceAssetImpl implements ServiceAsset{
 	private DaoAsset daoAsset;
 
 	@Override
-	public AssetsDto findAssetsByUser(String userEmail) {
+	public List<AssetDto> findAssetsByUser(String userEmail) {
 		List<Asset> userAssets = getAssetsByUser(userEmail);
-		AssetsDto result = assetsToAssetsDto(userAssets);
+		List<AssetDto> result = assetsToAssetsDto(userAssets);
 		return result;
 	}
 
 	@Override
-	public AssetsDto findAllAssets() {
+	public List<AssetDto> findAllAssets() {
 		List<Asset> allAsset = new ArrayList<Asset>();
 		allAsset = (List<Asset>) daoAsset.findAll();
-		AssetsDto result = assetsToAssetsDto(allAsset);
+		List<AssetDto> result = assetsToAssetsDto(allAsset);
 		return result;	
 	}
 
@@ -100,14 +99,13 @@ public class ServiceAssetImpl implements ServiceAsset{
 		return result;	
 	}
 	
-	private AssetsDto assetsToAssetsDto(List<Asset> allAsset) {
+	private List<AssetDto> assetsToAssetsDto(List<Asset> allAsset) {
 		List<AssetDto> assetsDto = new ArrayList<AssetDto>();
 		for (Asset asset : allAsset) {
 			AssetDto assetDto = new AssetDto(asset.getId(), asset.getUserEmail(), asset.getCurrencyTicker(), asset.getAmount());
 			assetsDto.add(assetDto);
 		}
-		AssetsDto result = new AssetsDto(assetsDto);
-		return result;
+		return assetsDto;
 	}
 
 }

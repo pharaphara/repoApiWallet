@@ -14,8 +14,8 @@ import com.api.Wallet.entity.Asset;
 
 public interface ServiceAsset {
 	
-	AssetsDto findAssetsByUser(String userEmail);
-	AssetsDto findAllAssets();
+	List<AssetDto> findAssetsByUser(String userEmail);
+	List<AssetDto> findAllAssets();
 	AssetDto findUserAssetByCurrency(String userEmail, String currencyTicker);
 	Asset majAsset(Asset asset, double montant, boolean isTransfert);
 	AssetAvailableAmountDto getAvailableAmount(String userEmail, String currencyTicker);
