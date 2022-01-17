@@ -1,12 +1,17 @@
 package com.api.Wallet.webServiceRest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.Wallet.dto.AssetAmountToBlockDto;
+import com.api.Wallet.dto.PaymentCbDto;
 import com.api.Wallet.dto.PaymentDto;
+import com.api.Wallet.dto.ResultPaymentCbDto;
 import com.api.Wallet.dto.TransfertDto;
 import com.api.Wallet.dto.ResultTransfertDto;
 import com.api.Wallet.service.ServicePayment;
@@ -26,6 +31,12 @@ public class PaymentCtrl {
 	@PostMapping("/transfertCurrency")
 	public ResultTransfertDto transfertCurrency(@RequestBody TransfertDto transfertDto) {
 		return servicePayment.transfertCurrency(transfertDto);
+	}
+	
+	@PostMapping("/sendPaymentCb")
+	public ResponseEntity<ResultPaymentCbDto> sendPaymentCb(@RequestBody PaymentCbDto paymentCbDto) {
+		ResultPaymentCbDto resultPaymentCbDto = servicePayment.sendPaymentCb(paymentCbDto);
+		return new ResponseEntity<>(resultPaymentCbDto, HttpStatus.OK);
 	}
 	
 }
