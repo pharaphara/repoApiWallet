@@ -3,14 +3,17 @@ package com.api.Wallet.webServiceRest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.api.Wallet.dto.AssetAmountToBlockDto;
 import com.api.Wallet.dto.PaymentCbDto;
 import com.api.Wallet.dto.PaymentDto;
+import com.api.Wallet.dto.PaymentHistoryByCurrencyDto;
 import com.api.Wallet.dto.ResultPaymentCbDto;
 import com.api.Wallet.dto.TransfertDto;
 import com.api.Wallet.dto.ResultTransfertDto;
@@ -39,4 +42,9 @@ public class PaymentCtrl {
 		return new ResponseEntity<>(resultPaymentCbDto, HttpStatus.OK);
 	}
 	
+	@GetMapping("/currencyHistory")
+	public ResponseEntity<PaymentHistoryByCurrencyDto> paymentHistoryByCurrency(@RequestParam String userEmail, @RequestParam String currencyTicker){
+		PaymentHistoryByCurrencyDto paymentHistoryByUserDto = servicePayment.paymentHistoryByCurrency(userEmail, currencyTicker);
+		return new ResponseEntity<>(paymentHistoryByUserDto, HttpStatus.OK);
+	}
 }

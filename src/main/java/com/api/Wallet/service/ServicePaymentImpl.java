@@ -5,6 +5,9 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
@@ -16,6 +19,8 @@ import com.api.Wallet.dao.DaoAsset;
 import com.api.Wallet.dao.DaoPayment;
 import com.api.Wallet.dto.PaymentCbDto;
 import com.api.Wallet.dto.PaymentDto;
+import com.api.Wallet.dto.PaymentHistoryByCurrencyDto;
+import com.api.Wallet.dto.PaymentWithDateDto;
 import com.api.Wallet.dto.ResultPaymentCbDto;
 import com.api.Wallet.dto.TransfertDto;
 import com.api.Wallet.dto.BankCardDto;
@@ -139,4 +144,27 @@ public class ServicePaymentImpl  implements ServicePayment{
 		}
 		return result;
 	}
+
+	@Override
+	public PaymentHistoryByCurrencyDto paymentHistoryByCurrency(String userEmail, String currencyTicker) {
+		return getHistoryByCurrency(userEmail, currencyTicker);
+	}
+	
+	public PaymentHistoryByCurrencyDto getHistoryByCurrency(String userEmail, String currencyTicker){
+		// Recherche de tous les assets de l'utilisateur pour une currency
+		Optional<Asset> userAsset = daoAsset.findByUserEmailAndCurrencyTicker(userEmail, currencyTicker);
+		// Recupération des payments avec l'idAsset
+		if(userAsset.isPresent()) {
+			List<Payment> userPayments = (List<Payment>) daoPayment.findByAsset(userAsset.get()).get();
+			List<PaymentWithDateDto> paymentsWithDateDto = new ArrayList<PaymentWithDateDto>();
+			for (Payment payment : userPayments) {
+				PaymentWithDateDto paymentWithDate= new PaymentWithDateDto(payment.getAmount(), payment.getDate());
+				paymentsWithDateDto.add(paymentWithDate);
+			}
+			return new PaymentHistoryByCurrencyDto(paymentsWithDateDto, currencyTicker, userEmail);
+		}else {
+			return (PaymentHistoryByCurrencyDto) Collections.emptyList();
+		}
+	}
+	
 }
