@@ -11,6 +11,6 @@ import com.api.Wallet.entity.Asset;
 public interface DaoAsset extends CrudRepository<Asset, Integer>{
 
 	Optional<Asset> findByWalletAdressAndCurrencyTicker(String walletAdresse, String currencyTicker);
-	Asset findByUserEmailAndCurrencyTicker(String email, String currencyTicker);
+	Optional<Asset> findByUserEmailAndCurrencyTicker(String email, String currencyTicker);
 
 }
