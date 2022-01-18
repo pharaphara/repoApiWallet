@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.api.Wallet.dto.AllHistoryByUSerDto;
 import com.api.Wallet.dto.AssetAmountToBlockDto;
 import com.api.Wallet.dto.PaymentCbDto;
 import com.api.Wallet.dto.PaymentDto;
@@ -47,4 +48,11 @@ public class PaymentCtrl {
 		PaymentHistoryByCurrencyDto paymentHistoryByUserDto = servicePayment.paymentHistoryByCurrency(userEmail, currencyTicker);
 		return new ResponseEntity<>(paymentHistoryByUserDto, HttpStatus.OK);
 	}
+	
+	@GetMapping("/allHistory")
+	public ResponseEntity<AllHistoryByUSerDto> getAllHistory(@RequestParam String userEmail){
+		AllHistoryByUSerDto result = servicePayment.getAllHistory(userEmail);
+		return new ResponseEntity<>(result, HttpStatus.OK);
+	}
+	
 }

@@ -1,5 +1,9 @@
 package com.api.Wallet.service;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.api.Wallet.dto.AllHistoryByUSerDto;
 import com.api.Wallet.dto.PaymentCbDto;
 import com.api.Wallet.dto.PaymentDto;
 import com.api.Wallet.dto.PaymentHistoryByCurrencyDto;
@@ -13,4 +17,5 @@ public interface ServicePayment {
 	public ResultTransfertDto transfertCurrency(TransfertDto transfertDto);
 	public ResultPaymentCbDto sendPaymentCb(PaymentCbDto paymentCbDto);
 	public PaymentHistoryByCurrencyDto paymentHistoryByCurrency(String userEmail, String currencyTicker);
+	public AllHistoryByUSerDto getAllHistory(String userEmail);
 }

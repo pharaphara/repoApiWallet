@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
+import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,11 @@ import com.api.Wallet.dto.PaymentHistoryByCurrencyDto;
 import com.api.Wallet.dto.PaymentWithDateDto;
 import com.api.Wallet.dto.ResultPaymentCbDto;
 import com.api.Wallet.dto.TransfertDto;
+import com.api.Wallet.dto.AllHistoryByUSerDto;
 import com.api.Wallet.dto.BankCardDto;
 import com.api.Wallet.dto.ResultTransfertDto;
 import com.api.Wallet.entity.Asset;
+import com.api.Wallet.entity.CurrencyTicker;
 import com.api.Wallet.entity.Payment;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.SqlDateDeserializer;
 
@@ -165,6 +168,17 @@ public class ServicePaymentImpl  implements ServicePayment{
 		}else {
 			return (PaymentHistoryByCurrencyDto) Collections.emptyList();
 		}
+	}
+
+	@Override
+	public AllHistoryByUSerDto getAllHistory(String userEmail) {
+		List<PaymentHistoryByCurrencyDto> listePaiementsParCurrency = new ArrayList<PaymentHistoryByCurrencyDto>();
+		for (CurrencyTicker currencyTicker : CurrencyTicker.values()) {
+			PaymentHistoryByCurrencyDto historyByCurrency = getHistoryByCurrency(userEmail, currencyTicker.name());
+			listePaiementsParCurrency.add(historyByCurrency);
+		}
+		AllHistoryByUSerDto result = new AllHistoryByUSerDto(listePaiementsParCurrency);
+		return result;
 	}
 	
 }
