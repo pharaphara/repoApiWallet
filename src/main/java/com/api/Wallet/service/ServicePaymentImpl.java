@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.apache.commons.lang3.StringUtils;
-import org.assertj.core.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +30,7 @@ import com.api.Wallet.entity.Asset;
 import com.api.Wallet.entity.CurrencyTicker;
 import com.api.Wallet.entity.Payment;
 import com.fasterxml.jackson.databind.deser.std.DateDeserializers.SqlDateDeserializer;
+import com.mysql.cj.x.protobuf.MysqlxCrud.FindOrBuilder;
 
 import io.netty.util.internal.StringUtil;
 
@@ -50,7 +50,17 @@ public class ServicePaymentImpl  implements ServicePayment{
 	@Override
 	public PaymentDto achievePayment(PaymentDto paymentDto) {
 		// Recuperation de l'asset
-		Asset asset = daoAsset.findByUserEmailAndCurrencyTicker(paymentDto.getUserEmail(), paymentDto.getCurrencyTicker()).get();
+		Optional<Asset> optionalAsset = daoAsset.findByUserEmailAndCurrencyTicker(paymentDto.getUserEmail(), paymentDto.getCurrencyTicker());
+		Asset asset = null;
+		//Recherche Wallet Adress
+		List<Asset> userAssets = daoAsset.findByUserEmail(paymentDto.getUserEmail());
+		String walletAdress = userAssets.get(0).getWalletAdress();
+		if(!optionalAsset.isPresent()) {
+			// Création d'un nouvel asset s'il n'existe pas
+			asset = new Asset(paymentDto.getUserEmail(), paymentDto.getCurrencyTicker(), 0, 0, walletAdress);
+		}else {
+			asset = optionalAsset.get();
+		}
 		//On realise le payment
 		Asset assetMaj = serviceAsset.majAsset(asset, paymentDto.getMontant(), false);
 		//On enregistre le payment

@@ -12,5 +12,6 @@ public interface DaoAsset extends CrudRepository<Asset, Integer>{
 
 	Optional<Asset> findByWalletAdressAndCurrencyTicker(String walletAdresse, String currencyTicker);
 	Optional<Asset> findByUserEmailAndCurrencyTicker(String email, String currencyTicker);
+	List<Asset> findByUserEmail(String email);
 
 }
