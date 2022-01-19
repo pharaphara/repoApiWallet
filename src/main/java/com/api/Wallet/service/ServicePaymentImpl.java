@@ -73,27 +73,33 @@ public class ServicePaymentImpl  implements ServicePayment{
 		ResultTransfertDto resultTransfertDto = new ResultTransfertDto();
 		resultTransfertDto.setTransfertDto(transfertDto);
 		//Recuperation de l'asset envoyeur
-		Asset assetEnvoyeur = daoAsset.findByUserEmailAndCurrencyTicker(transfertDto.getUserEmail(), transfertDto.getCurrencyTicker()).get();
-		// Verification du montant disponible sur l'asset envoyeur
-		double availableAmount = assetEnvoyeur.getAvailableAmount();
-		if(availableAmount < transfertDto.getAmount()) {
-			resultTransfertDto.setTransfertOk(false);
-			resultTransfertDto.setMessage("Fonds disponibles insuffisants");
-		}else {
-			// Recuperation de l'asset receveur
-			Optional<Asset> optionalAsset = daoAsset.findByWalletAdressAndCurrencyTicker(transfertDto.getWalletAdresse(), transfertDto.getCurrencyTicker());
-			if(!optionalAsset.isPresent()) {
+		Optional<Asset> optionalAssetEnvoyeur = daoAsset.findByUserEmailAndCurrencyTicker(transfertDto.getUserEmail(), transfertDto.getCurrencyTicker());
+		if(optionalAssetEnvoyeur.isPresent()) {
+			Asset assetEnvoyeur = optionalAssetEnvoyeur.get();
+			// Verification du montant disponible sur l'asset envoyeur
+			double availableAmount = assetEnvoyeur.getAvailableAmount();
+			if(availableAmount < transfertDto.getAmount()) {
 				resultTransfertDto.setTransfertOk(false);
-				resultTransfertDto.setMessage("Adresse du wallet incorrect");
+				resultTransfertDto.setMessage("Missing fund");
 			}else {
-				Asset assetReceveur = optionalAsset.get();
-				// Réalisation des payments
-				doPayment(assetEnvoyeur, -transfertDto.getAmount());
-				doPayment(assetReceveur, transfertDto.getAmount());
-				//Maj du resultTransfertDto
-				resultTransfertDto.setTransfertOk(true);
-				resultTransfertDto.setMessage("Transfert réussi");
+				// Recuperation de l'asset receveur
+				Optional<Asset> optionalAsset = daoAsset.findByWalletAdressAndCurrencyTicker(transfertDto.getWalletAdresse(), transfertDto.getCurrencyTicker());
+				if(!optionalAsset.isPresent()) {
+					resultTransfertDto.setTransfertOk(false);
+					resultTransfertDto.setMessage("Incorrect wallet address");
+				}else {
+					Asset assetReceveur = optionalAsset.get();
+					// Réalisation des payments
+					doPayment(assetEnvoyeur, -transfertDto.getAmount());
+					doPayment(assetReceveur, transfertDto.getAmount());
+					//Maj du resultTransfertDto
+					resultTransfertDto.setTransfertOk(true);
+					resultTransfertDto.setMessage("Transfert réussi");
+				}
 			}
+		}else {
+			resultTransfertDto.setTransfertOk(false);
+			resultTransfertDto.setMessage("Missing fund");
 		}
 		return resultTransfertDto;
 	}

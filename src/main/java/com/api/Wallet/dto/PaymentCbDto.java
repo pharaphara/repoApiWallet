@@ -3,7 +3,7 @@ package com.api.Wallet.dto;
 public class PaymentCbDto {
 
 	private String userEmail;
-	private String currecnticker;
+	private String currencyTicker;
 	private String walletAdress;
 	private double amount;
 	private BankCardDto bankCardDto;
@@ -21,10 +21,10 @@ public class PaymentCbDto {
 		this.userEmail = userEmail;
 	}
 	public String getCurrecnticker() {
-		return currecnticker;
+		return currencyTicker;
 	}
 	public void setCurrecnticker(String currecnticker) {
-		this.currecnticker = currecnticker;
+		this.currencyTicker = currecnticker;
 	}
 	public String getWalletAdress() {
 		return walletAdress;
@@ -45,7 +45,7 @@ public class PaymentCbDto {
 			com.api.Wallet.dto.BankCardDto bankCardDto) {
 		super();
 		this.userEmail = userEmail;
-		this.currecnticker = currecnticker;
+		this.currencyTicker = currecnticker;
 		this.walletAdress = walletAdress;
 		this.amount = amount;
 		this.bankCardDto = bankCardDto;
