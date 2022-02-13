@@ -15,7 +15,7 @@ pipeline {
     }
    
     stages {
-        stage('Checkout MatchEngine') {
+        stage('Checkout Project') {
             steps {
                 echo "-=- Checout project -=-"
                 git branch: 'main', url: 'https://github.com/Raphael-lvt/repoApiWallet'
