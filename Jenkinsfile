@@ -57,7 +57,7 @@ pipeline {
             steps{
             
                 sh 'aws configure set region eu-west-3'
-                sh 'aws s3 cp ./target/*.jar s3://mydeploys3/$ARTIFACT_NAME'
+                sh 'aws s3 cp target/*.jar s3://mydeploys3/$ARTIFACT_NAME'
                 
                 
                 
