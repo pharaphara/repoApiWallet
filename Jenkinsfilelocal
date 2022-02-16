@@ -11,8 +11,8 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
         ARTIFACT_NAME = "wallet-${BUILD_ID}.jar"
         AWS_S3_BUCKET = 'mydeploys3'
-        AWS_EB_APP_NAME = '1-wallet'
-        AWS_EB_ENVIRONMENT = '1wallet-env'
+        AWS_EB_APP_NAME = 'walletapp'
+        AWS_EB_ENVIRONMENT = 'walletapp-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}-local"
     }
  
