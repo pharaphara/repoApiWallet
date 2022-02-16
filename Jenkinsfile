@@ -22,7 +22,7 @@ pipeline {
           
             steps {
                 echo "-=- Checout project -=-"
-                git branch: 'main', url: 'https://github.com/Raphael-lvt/repoApiWallet'
+                git branch: 'main', credentialsId: 'bd839270-f94c-4dc1-9081-6b4b889efaae',url: 'git@github.com:Raphael-lvt/repoApiWallet'
             }
         }
         
