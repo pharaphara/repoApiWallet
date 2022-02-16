@@ -22,7 +22,7 @@ pipeline {
           
             steps {
                 echo "-=- Checout project -=-"
-                git branch: 'main',  git branch: 'main', url: 'https://github.com/Raphael-lvt/repoApiWallet'
+                git branch: 'main', url: 'https://github.com/Raphael-lvt/repoApiWallet'
             }
         }
         
