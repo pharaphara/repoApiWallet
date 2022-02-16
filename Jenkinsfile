@@ -15,9 +15,7 @@ pipeline {
         AWS_EB_ENVIRONMENT = '1wallet-env'
         AWS_EB_APP_VERSION = "${BUILD_ID}"
     }
-    tools {
-        maven 'MVN'
-    }
+ 
    
     stages {
         stage('Checkout Project') {
