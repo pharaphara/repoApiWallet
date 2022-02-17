@@ -10,10 +10,10 @@ pipeline {
         AWS_ACCESS_KEY_ID     = credentials('jenkins-aws-secret-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('jenkins-aws-secret-access-key')
         ARTIFACT_NAME = "wallet-${BUILD_ID}.jar"
-        AWS_S3_BUCKET = 'mydeploys3'
-        AWS_EB_APP_NAME = '1-wallet'
-        AWS_EB_ENVIRONMENT = '1wallet-env'
-        AWS_EB_APP_VERSION = "${BUILD_ID}-${TAG_TIMESTAMP}"
+        AWS_S3_BUCKET = 'mydeploys3terra'
+        AWS_EB_APP_NAME = 'walletapp'
+        AWS_EB_ENVIRONMENT = 'walletapp-env'
+        AWS_EB_APP_VERSION = "${BUILD_ID}"
     }
  
    
@@ -64,7 +64,7 @@ pipeline {
             steps{
             
                 sh 'aws configure set region eu-west-3'
-                sh 'aws s3 cp target/*.jar s3://mydeploys3/$ARTIFACT_NAME'
+                sh 'aws s3 cp target/*.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
                 
                 
                 
