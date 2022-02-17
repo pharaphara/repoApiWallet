@@ -61,6 +61,7 @@ pipeline {
                    steps{
                             sh 'aws configure set region eu-west-3'
                             sh 'aws s3 cp target/*.jar s3://$AWS_S3_BUCKET/$ARTIFACT_NAME'
+                            sh 'sleep 10'
                                                 
             }
         }
