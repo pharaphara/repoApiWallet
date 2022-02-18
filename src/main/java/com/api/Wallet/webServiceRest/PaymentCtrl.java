@@ -22,6 +22,7 @@ import com.api.Wallet.service.ServicePayment;
 
 @RestController
 @RequestMapping(value="/assets-api-rest")
+@CrossOrigin(origins = "*")
 public class PaymentCtrl {
 	
 	@Autowired
