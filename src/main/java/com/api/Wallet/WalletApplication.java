@@ -18,7 +18,7 @@ public class WalletApplication {
 		SpringApplication apiWallet = new SpringApplication(WalletApplication.class);
 		
 		//Alimentation BDD
-		apiWallet.setAdditionalProfiles("initDataSet");
+		//apiWallet.setAdditionalProfiles("initDataSet");
 		ConfigurableApplicationContext context = apiWallet.run(args);		
 	}
 
