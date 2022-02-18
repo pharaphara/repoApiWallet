@@ -23,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value="/assets-api-rest")
+@CrossOrigin(origins = "*")
 public class AssetCtrl {
 	
 	@Autowired
